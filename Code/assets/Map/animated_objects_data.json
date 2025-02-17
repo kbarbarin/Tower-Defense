@@ -1,0 +1,56 @@
+[
+  {
+    "Position": {
+      "X": 697,
+      "Y": 888
+    },
+    "AnimationType": "res://main.tscn::SpriteFrames_11rus",
+    "AnimationName": "Flag",
+    "ParentFolder": "Flags"
+  },
+  {
+    "Position": {
+      "X": 621,
+      "Y": 1039
+    },
+    "AnimationType": "res://main.tscn::SpriteFrames_11rus",
+    "AnimationName": "Flag",
+    "ParentFolder": "Flags"
+  },
+  {
+    "Position": {
+      "X": 895,
+      "Y": 981
+    },
+    "AnimationType": "res://main.tscn::SpriteFrames_11rus",
+    "AnimationName": "Flag",
+    "ParentFolder": "Flags"
+  },
+  {
+    "Position": {
+      "X": 806,
+      "Y": 891
+    },
+    "AnimationType": "res://main.tscn::SpriteFrames_11rus",
+    "AnimationName": "Flag",
+    "ParentFolder": "Flags"
+  },
+  {
+    "Position": {
+      "X": 728,
+      "Y": 1022
+    },
+    "AnimationType": "res://main.tscn::SpriteFrames_2ptd3",
+    "AnimationName": "new_animation",
+    "ParentFolder": "Campfires"
+  },
+  {
+    "Position": {
+      "X": 776,
+      "Y": 959
+    },
+    "AnimationType": "res://main.tscn::SpriteFrames_2ev41",
+    "AnimationName": "default",
+    "ParentFolder": "Campfires"
+  }
+]
