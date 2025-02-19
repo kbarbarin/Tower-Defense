@@ -32,25 +32,25 @@ public partial class WaveManager : Node
 	}
 
 	public override void _Process(double delta)
-{
-	for (int i = _activeEnemies.Count - 1; i >= 0; i--) // Parcours inversé
 	{
-		PathFollow2D pathFollow = _activeEnemies[i];
-
-		if (pathFollow != null)
+		for (int i = _activeEnemies.Count - 1; i >= 0; i--) // Parcours inversé
 		{
-			pathFollow.Progress += (float)(100 * delta); // Avancer l'ennemi
+			PathFollow2D pathFollow = _activeEnemies[i];
 
-			if (pathFollow.ProgressRatio >= 1.0f) // Vérifier s'il a atteint la fin
+			if (pathFollow != null)
 			{
-				GD.Print("Ennemi arrivé au bout du chemin !");
+				pathFollow.Progress += (float)(100 * delta); // Avancer l'ennemi
 
-				_activeEnemies.RemoveAt(i); // Retirer de la liste
-				pathFollow.QueueFree(); // Supprimer proprement
+				if (pathFollow.ProgressRatio >= 1.0f) // Vérifier s'il a atteint la fin
+				{
+					GD.Print("Ennemi arrivé au bout du chemin !");
+
+					_activeEnemies.RemoveAt(i); // Retirer de la liste
+					pathFollow.QueueFree(); // Supprimer proprement
+				}
 			}
 		}
 	}
-}
 
 	private void SpawnEnemy()
 	{

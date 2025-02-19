@@ -7,8 +7,22 @@ public partial class enemy : Node2D
 	private AnimationPlayer animationPlayer;
 	private Vector2 targetPosition;
 
+	// player Data
+	public int life;
+	public int attack;
+	public float speed;
+
 	[Export]
 	public string EnemyType { get; set; } // Paramètre exporté pour spécifier le type d'ennemi
+
+	public void Initialize(string type, int hp, int atk, float spd)
+	{
+		EnemyType = type;
+		life = hp;
+		attack = atk;
+		speed = spd;
+		GD.Print($"Ennemi initialisé : {type} - HP: {hp}, ATK: {atk}, SPD: {spd}");
+	}
 
 	public override void _Ready()
 	{

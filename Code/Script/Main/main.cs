@@ -24,6 +24,5 @@ internal partial class main : TileMap
 
 		CenterCamera();
 		AdjustCameraForMobile();
-//		GenerateEnemy();
 	}
 }
