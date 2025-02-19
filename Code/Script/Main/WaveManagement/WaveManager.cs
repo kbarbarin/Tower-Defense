@@ -8,10 +8,11 @@ public partial class WaveManager : Node
 	public PackedScene EnemyScene { get; set; }
 
 	[Export]
-	public Path2D EnemyPath { get; set; } // Assigne le Path2D depuis l’éditeur
-	private List<PathFollow2D> _activeEnemies = new List<PathFollow2D>(); // Stocke PathFollow2D
+	public Path2D EnemyPath { get; set; }
+	private List<PathFollow2D> _activeEnemies = new List<PathFollow2D>();
 
 	private int _waveNumber = 0;
+	private float _pathLength = 3623.46f;
 
 	public override void _Ready()
 	{
@@ -26,32 +27,30 @@ public partial class WaveManager : Node
 		for (int i = 0; i < enemyCount; i++)
 		{
 			SpawnEnemy();
-			await Task.Delay((int)(spawnInterval * 1000)); // Attendre avant le prochain spawn
+			await Task.Delay((int)(spawnInterval * 1000));
 		}
 	}
 
 	public override void _Process(double delta)
+{
+	for (int i = _activeEnemies.Count - 1; i >= 0; i--) // Parcours inversé
 	{
-		for (int i = _activeEnemies.Count - 1; i >= 0; i--) // Parcours inversé pour suppression
+		PathFollow2D pathFollow = _activeEnemies[i];
+
+		if (pathFollow != null)
 		{
-			PathFollow2D pathFollow = _activeEnemies[i]; // On a directement un PathFollow2D
+			pathFollow.Progress += (float)(100 * delta); // Avancer l'ennemi
 
-			if (pathFollow != null)
+			if (pathFollow.ProgressRatio >= 1.0f) // Vérifier s'il a atteint la fin
 			{
-				pathFollow.Progress += (float)(100 * delta); // Avancer l'ennemi
+				GD.Print("Ennemi arrivé au bout du chemin !");
 
-				// Si l'ennemi arrive à la fin du chemin
-				if (pathFollow.ProgressRatio >= 1.0f)
-				{
-					GD.Print("Ennemi arrivé au bout du chemin !");
-
-					// Supprime l'ennemi et son PathFollow2D
-					_activeEnemies.RemoveAt(i); // Retirer de la liste
-					pathFollow.QueueFree(); // Supprimer l'ennemi et son parent directement
-				}
+				_activeEnemies.RemoveAt(i); // Retirer de la liste
+				pathFollow.QueueFree(); // Supprimer proprement
 			}
 		}
 	}
+}
 
 	private void SpawnEnemy()
 	{
@@ -61,35 +60,25 @@ public partial class WaveManager : Node
 			return;
 		}
 
-		// Créer un PathFollow2D et l'attacher au Path2D existant
 		PathFollow2D pathFollow = new PathFollow2D();
-		pathFollow.Progress = 0; // Commence au début du chemin
+		pathFollow.Progress = 0;
+		pathFollow.Loop = false;
 
-		// Instancie un nouvel ennemi
 		Node2D newEnemy = (Node2D)EnemyScene.Instantiate();
-		newEnemy.Position = Vector2.Zero; // Laisse PathFollow2D gérer sa position
-
-		// ✅ Lancer l'animation de l'ennemi s'il possède AnimatedSprite2D
+		newEnemy.Position = Vector2.Zero;
 		AnimatedSprite2D sprite = newEnemy.GetNodeOrNull<AnimatedSprite2D>("AnimatedSprite2D");
 		if (sprite != null)
 		{
-			sprite.Play("FrontWalk"); // Remplace "walk" par le nom de ton animation de déplacement
+			sprite.Play("FrontWalk");
 		}
 
-		// ✅ Si l'ennemi utilise AnimationPlayer
 		AnimationPlayer animPlayer = newEnemy.GetNodeOrNull<AnimationPlayer>("AnimationPlayer");
 		if (animPlayer != null)
 		{
-			animPlayer.Play("FrontWalk"); // Remplace "walk" par le nom de ton animation
+			animPlayer.Play("FrontWalk");
 		}
-
-		// Ajoute l'ennemi dans le PathFollow2D
 		pathFollow.AddChild(newEnemy);
-
-		// Ajoute le PathFollow2D dans le Path2D
 		EnemyPath.AddChild(pathFollow);
-
-		// Ajoute à la liste des ennemis actifs
 		_activeEnemies.Add(pathFollow);
 
 		GD.Print($"Nouvel ennemi spawné avec animation !");

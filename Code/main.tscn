@@ -1,4 +1,4 @@
-[gd_scene load_steps=128 format=3 uid="uid://byer7pqcf1skw"]
+[gd_scene load_steps=127 format=3 uid="uid://byer7pqcf1skw"]
 
 [ext_resource type="Texture2D" uid="uid://qgcahge0kx0g" path="res://assets/Field/Details/2 Fence/Fence 1.png" id="1_ij7io"]
 [ext_resource type="Texture2D" uid="uid://dv0eigt4x73po" path="res://assets/Field/Ground/FieldsTileset.png" id="1_jxkg8"]
@@ -48,7 +48,6 @@
 [ext_resource type="Texture2D" uid="uid://br0jqrwcjmllq" path="res://assets/Field/Animated Objects/2 Campfire/Campfire 2.png" id="29_b57mp"]
 [ext_resource type="Script" path="res://Script/Main/main.cs" id="45_6a8aa"]
 [ext_resource type="Texture2D" uid="uid://v744osymcsht" path="res://assets/Field/Animated Objects/2 Campfire/Campfire 1.png" id="48_ocrwy"]
-[ext_resource type="Script" path="res://Script/Main/WaveManagement/PathFollow2DController.cs" id="49_ox4co"]
 [ext_resource type="PackedScene" uid="uid://b33x2kfi5pcfi" path="res://enemy.tscn" id="49_ylbtr"]
 [ext_resource type="Script" path="res://Script/Main/WaveManagement/WaveManager.cs" id="51_uiuro"]
 
@@ -935,9 +934,6 @@ position = Vector2(747, 879.999)
 rotation = 1.59857
 progress = 3623.46
 loop = false
-script = ExtResource("49_ox4co")
-
-[node name="enemy" parent="Path2D/PathFollow2D" instance=ExtResource("49_ylbtr")]
 
 [node name="WaveManager" type="Node2D" parent="." node_paths=PackedStringArray("EnemyPath")]
 script = ExtResource("51_uiuro")
