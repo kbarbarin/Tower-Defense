@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Godot;
 
-public partial class WaveManager : Node
+public partial class WaveManager : Node2D
 {
 	[Export]
 	public PackedScene EnemyScene { get; set; }
@@ -60,27 +60,23 @@ public partial class WaveManager : Node
 			return;
 		}
 
+		// 🔥 Créer un PathFollow2D unique pour cet ennemi
 		PathFollow2D pathFollow = new PathFollow2D();
 		pathFollow.Progress = 0;
 		pathFollow.Loop = false;
 
+		// 🔥 Instancier l'ennemi
 		Node2D newEnemy = (Node2D)EnemyScene.Instantiate();
-		newEnemy.Position = Vector2.Zero;
-		AnimatedSprite2D sprite = newEnemy.GetNodeOrNull<AnimatedSprite2D>("AnimatedSprite2D");
-		if (sprite != null)
-		{
-			sprite.Play("FrontWalk");
-		}
+		enemy enemyInstance = newEnemy as enemy;
 
-		AnimationPlayer animPlayer = newEnemy.GetNodeOrNull<AnimationPlayer>("AnimationPlayer");
-		if (animPlayer != null)
-		{
-			animPlayer.Play("FrontWalk");
-		}
-		pathFollow.AddChild(newEnemy);
+		// 🔥 Initialiser l'ennemi avec son PathFollow2D
+		enemyInstance.Initialize("Wolf", 100, 10, 50.0f, pathFollow);
+
+		// 🔥 Ajouter l'ennemi dans son propre PathFollow2D
+		pathFollow.AddChild(enemyInstance);
 		EnemyPath.AddChild(pathFollow);
 		_activeEnemies.Add(pathFollow);
 
-		GD.Print($"Nouvel ennemi spawné avec animation !");
+		GD.Print("Nouvel ennemi spawné !");
 	}
 }

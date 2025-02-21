@@ -1,5 +1,6 @@
-[gd_scene load_steps=44 format=3 uid="uid://b33x2kfi5pcfi"]
+[gd_scene load_steps=45 format=3 uid="uid://b33x2kfi5pcfi"]
 
+[ext_resource type="Script" path="res://Script/Enemy/enemy.cs" id="1_2otur"]
 [ext_resource type="Texture2D" uid="uid://dr3ivkj36ulte" path="res://assets/Enemy/Wolf/D_Walk.png" id="1_yfj82"]
 [ext_resource type="Texture2D" uid="uid://inoetdgn0x66" path="res://assets/Enemy/Wolf/U_Death.png" id="2_4ll8q"]
 [ext_resource type="Texture2D" uid="uid://djk0xl7tufplp" path="res://assets/Enemy/Wolf/S_Walk.png" id="2_bmmco"]
@@ -294,6 +295,7 @@ animations = [{
 
 [node name="enemy" type="Node2D"]
 rotation = -1.5708
+script = ExtResource("1_2otur")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 texture_filter = 1

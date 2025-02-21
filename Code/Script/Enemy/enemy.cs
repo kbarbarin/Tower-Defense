@@ -4,56 +4,50 @@ using Godot;
 public partial class enemy : Node2D
 {
 	private AnimatedSprite2D animatedSprite;
-	private AnimationPlayer animationPlayer;
-	private Vector2 targetPosition;
+	private PathFollow2D pathFollow; // 🔥 Ajout du PathFollow2D
+	private float pathSpeed; // 🔥 Stocke la vitesse de déplacement
 
-	// player Data
+	// Données de l'ennemi
 	public int life;
 	public int attack;
 	public float speed;
 
 	[Export]
-	public string EnemyType { get; set; } // Paramètre exporté pour spécifier le type d'ennemi
+	public string EnemyType { get; set; }
 
-	public void Initialize(string type, int hp, int atk, float spd)
+	public void Initialize(string type, int hp, int atk, float spd, PathFollow2D pathFollowNode)
 	{
 		EnemyType = type;
 		life = hp;
 		attack = atk;
 		speed = spd;
+		pathFollow = pathFollowNode; // 🔥 Sauvegarde du PathFollow2D
+		pathSpeed = speed / 1000.0f; // 🔥 Ajustement de la vitesse
+
 		GD.Print($"Ennemi initialisé : {type} - HP: {hp}, ATK: {atk}, SPD: {spd}");
 	}
 
 	public override void _Ready()
 	{
-		// Initialisation des variables
 		animatedSprite = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
-		animationPlayer = GetNode<AnimationPlayer>("AnimatedSprite2D/AnimationPlayer");
-
-		// Charger les animations selon le type d'ennemi
 		SetupEnemy(EnemyType);
-
-		// Définir une position de cible de test (à modifier selon les besoins)
 	}
 
 	private void SetupEnemy(string type)
 	{
-		// Charger la configuration d'animation selon le type d'ennemi
 		switch (type)
 		{
 			case "Wolf":
-				if (animatedSprite.SpriteFrames.HasAnimation("FrontWolf"))
+				if (animatedSprite.SpriteFrames.HasAnimation("FrontWalk"))
 				{
-					animatedSprite.Play("FrontWolf");
+					animatedSprite.Play("FrontWalk");
 				}
 				else
 				{
-					GD.PrintErr("Animation 'Wolf/WolfForwardWalk' introuvable !");
+					GD.PrintErr("Animation 'FrontWalk' introuvable !");
 				}
-				GD.Print("Ennemi défini : Wolf");
 				break;
 			case "Orc":
-				//				animatedSprite.Play("walk");
 				GD.Print("Ennemi défini : Orc");
 				break;
 			default:
@@ -64,17 +58,17 @@ public partial class enemy : Node2D
 
 	public override void _Process(double delta)
 	{
-		// Déplacer l'ennemi vers une position cible avec une vitesse de base
-		GD.Print("Mise à jour de l'ennemi à chaque frame");
-		Vector2 direction = (targetPosition - Position).Normalized();
+		if (pathFollow == null)
+			return;
 
-		float speed = 100.0f; // Vitesse de déplacement de l'ennemi
-		Position += direction * speed * (float)delta;
+		// 🔥 Déplacement indépendant dans PathFollow2D
+		pathFollow.Progress += (float)(pathSpeed * delta);
 
-		// Changer l'animation si l'ennemi est proche de la cible
-		if (Position.DistanceTo(targetPosition) < 5.0f)
+		// 🔥 Si l'ennemi atteint la fin du chemin, il est supprimé
+		if (pathFollow.ProgressRatio >= 1.0f)
 		{
-			animatedSprite.Play("RESET");
+			GD.Print("Ennemi arrivé au bout du chemin !");
+			QueueFree();
 		}
 	}
 }
