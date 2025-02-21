@@ -1,4 +1,4 @@
-[gd_scene load_steps=127 format=3 uid="uid://byer7pqcf1skw"]
+[gd_scene load_steps=128 format=3 uid="uid://byer7pqcf1skw"]
 
 [ext_resource type="Texture2D" uid="uid://qgcahge0kx0g" path="res://assets/Field/Details/2 Fence/Fence 1.png" id="1_ij7io"]
 [ext_resource type="Texture2D" uid="uid://dv0eigt4x73po" path="res://assets/Field/Ground/FieldsTileset.png" id="1_jxkg8"]
@@ -49,6 +49,7 @@
 [ext_resource type="Script" path="res://Script/Main/main.cs" id="45_6a8aa"]
 [ext_resource type="Texture2D" uid="uid://v744osymcsht" path="res://assets/Field/Animated Objects/2 Campfire/Campfire 1.png" id="48_ocrwy"]
 [ext_resource type="PackedScene" uid="uid://b33x2kfi5pcfi" path="res://enemy.tscn" id="49_ylbtr"]
+[ext_resource type="PackedScene" uid="uid://ddmapq75g7njc" path="res://tower.tscn" id="51_4yx28"]
 [ext_resource type="Script" path="res://Script/Main/WaveManagement/WaveManager.cs" id="51_uiuro"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ep7ty"]
@@ -939,3 +940,6 @@ loop = false
 script = ExtResource("51_uiuro")
 EnemyScene = ExtResource("49_ylbtr")
 EnemyPath = NodePath("../Path2D")
+
+[node name="Tower" parent="." instance=ExtResource("51_4yx28")]
+position = Vector2(153, 378)
