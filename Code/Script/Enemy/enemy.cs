@@ -4,10 +4,9 @@ using Godot;
 public partial class enemy : Node2D
 {
 	private AnimatedSprite2D animatedSprite;
-	private PathFollow2D pathFollow; // 🔥 Ajout du PathFollow2D
-	private float pathSpeed; // 🔥 Stocke la vitesse de déplacement
+	private PathFollow2D pathFollow;
+	private float pathSpeed;
 
-	// Données de l'ennemi
 	public int life;
 	public int attack;
 	public float speed;
@@ -21,8 +20,8 @@ public partial class enemy : Node2D
 		life = hp;
 		attack = atk;
 		speed = spd;
-		pathFollow = pathFollowNode; // 🔥 Sauvegarde du PathFollow2D
-		pathSpeed = speed / 1000.0f; // 🔥 Ajustement de la vitesse
+		pathFollow = pathFollowNode;
+		pathSpeed = speed / 1000.0f;
 
 		GD.Print($"Ennemi initialisé : {type} - HP: {hp}, ATK: {atk}, SPD: {spd}");
 	}
@@ -61,10 +60,7 @@ public partial class enemy : Node2D
 		if (pathFollow == null)
 			return;
 
-		// 🔥 Déplacement indépendant dans PathFollow2D
 		pathFollow.Progress += (float)(pathSpeed * delta);
-
-		// 🔥 Si l'ennemi atteint la fin du chemin, il est supprimé
 		if (pathFollow.ProgressRatio >= 1.0f)
 		{
 			GD.Print("Ennemi arrivé au bout du chemin !");
