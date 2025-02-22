@@ -1,5 +1,6 @@
-[gd_scene load_steps=14 format=3 uid="uid://ddmapq75g7njc"]
+[gd_scene load_steps=15 format=3 uid="uid://ddmapq75g7njc"]
 
+[ext_resource type="Script" path="res://Script/Tower/Tower.cs" id="1_8scgc"]
 [ext_resource type="Texture2D" uid="uid://dw204a01gjl0c" path="res://assets/Tower/2 Idle/3.png" id="1_8u44i"]
 [ext_resource type="Texture2D" uid="uid://nnqv756o6aac" path="res://assets/Tower/3 Units/1/D_Idle.png" id="2_b4dwu"]
 
@@ -79,6 +80,7 @@ animations = [{
 }]
 
 [node name="Tower" type="Node2D"]
+script = ExtResource("1_8scgc")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
