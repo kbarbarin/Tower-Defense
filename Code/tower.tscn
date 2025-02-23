@@ -88,6 +88,7 @@ sprite_frames = SubResource("SpriteFrames_b67m0")
 animation = &"idle"
 
 [node name="Area2D" type="Area2D" parent="AnimatedSprite2D"]
+collision_layer = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AnimatedSprite2D/Area2D"]
 position = Vector2(0, 41)

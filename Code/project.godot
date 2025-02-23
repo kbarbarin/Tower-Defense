@@ -25,6 +25,11 @@ window/size/mode=3
 
 project/assembly_name="Tower Defense"
 
+[layer_names]
+
+2d_render/layer_1="enemy"
+2d_render/layer_2="tower"
+
 [rendering]
 
 renderer/rendering_method="mobile"

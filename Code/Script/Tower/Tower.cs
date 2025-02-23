@@ -7,47 +7,75 @@ public partial class Tower : Node2D
 	private List<enemy> enemiesInRange = new List<enemy>(); // Liste des ennemis à portée
 
 	[Export]
-	public int Damage = 10; // Dégâts de la tour
+	public int Damage = 100; // Dégâts de la tour
 
 	[Export]
 	public float AttackSpeed = 1.0f; // Attaque par seconde
 
+	private bool isAttacking = false; // 🔥 Pour éviter de créer plusieurs timers
+
 	public override void _Ready()
 	{
+		// ✅ Vérifie que `detectionArea` existe bien
 		detectionArea = GetNodeOrNull<Area2D>("AnimatedSprite2D/Area2D");
-		detectionArea.BodyEntered += OnEnemyEnter;
-		detectionArea.BodyExited += OnEnemyExit;
+
+		if (detectionArea == null)
+		{
+			GD.PrintErr("❌ ERREUR : DetectionArea introuvable !");
+			return;
+		}
+
+		GD.Print("✅ Area2D trouvé !");
+
+		// ✅ Connecte bien les signaux de détection
+		detectionArea.AreaEntered += OnEnemyEnter;
+		detectionArea.AreaExited += OnEnemyExit;
 	}
 
-	public override void _Process(double delta)
+	private void OnEnemyEnter(Area2D area)
 	{
-		// Attaque en boucle
-		GetTree().CreateTimer(1.0f / AttackSpeed).Timeout += Attack;
-	}
+		// 🔥 Remonter 2 niveaux pour atteindre `enemy`
+		enemy e = area.GetParent().GetParent() as enemy;
 
-	private void OnEnemyEnter(Node2D body)
-	{
-		if (body is enemy e)
+		if (e != null)
+		{
 			enemiesInRange.Add(e);
-			GD.Print("Enemy enter : ");
+			GD.Print($"✅ Enemy {e.Name} détecté !");
+
+			if (!isAttacking)
+			{
+				isAttacking = true;
+				Attack();
+			}
+		}
+		else
+		{
+			GD.PrintErr($"❌ ERREUR : {area.Name} n'a pas trouvé d'ennemi !");
+		}
 	}
 
 	private void OnEnemyExit(Node2D body)
 	{
 		if (body is enemy e)
+		{
 			enemiesInRange.Remove(e);
-		GD.Print("Enemy exit : ");
+			GD.Print($"❌ Enemy {e.Name} est sorti !");
+		}
 	}
 
 	private void Attack()
 	{
-		if (enemiesInRange.Count > 0)
+		if (enemiesInRange.Count == 0)
 		{
-			enemy target = enemiesInRange[0]; // Attaque le premier ennemi dans la liste
-			target.TakeDamage(Damage);
+			isAttacking = false; // ✅ Arrêter l'attaque si plus d'ennemis
+			return;
 		}
 
-		// Reprogrammer l'attaque
+		enemy target = enemiesInRange[0]; // Attaque le premier ennemi dans la liste
+		target.TakeDamage(Damage);
+		GD.Print($"🔥 Attaque sur {target.Name} pour {Damage} dégâts !");
+
+		// ✅ Reprogrammer l'attaque avec un Timer unique
 		GetTree().CreateTimer(1.0f / AttackSpeed).Timeout += Attack;
 	}
 }

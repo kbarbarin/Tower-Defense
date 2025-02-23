@@ -1,4 +1,4 @@
-[gd_scene load_steps=45 format=3 uid="uid://b33x2kfi5pcfi"]
+[gd_scene load_steps=46 format=3 uid="uid://b33x2kfi5pcfi"]
 
 [ext_resource type="Script" path="res://Script/Enemy/enemy.cs" id="1_2otur"]
 [ext_resource type="Texture2D" uid="uid://dr3ivkj36ulte" path="res://assets/Enemy/Wolf/D_Walk.png" id="1_yfj82"]
@@ -293,6 +293,9 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_e1q7f"]
+size = Vector2(14, 25)
+
 [node name="enemy" type="Node2D"]
 rotation = -1.5708
 script = ExtResource("1_2otur")
@@ -301,3 +304,10 @@ script = ExtResource("1_2otur")
 texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_xqll8")
 animation = &"FrontWalk"
+
+[node name="Area2D" type="Area2D" parent="AnimatedSprite2D"]
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AnimatedSprite2D/Area2D"]
+position = Vector2(-1.11957e-05, 2.5)
+shape = SubResource("RectangleShape2D_e1q7f")
