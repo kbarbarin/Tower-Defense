@@ -1,38 +1,42 @@
-using Godot;
 using System.Collections.Generic;
+using Godot;
 
-public partial class tower : Node2D
+public partial class Tower : Node2D
 {
 	private Area2D detectionArea;
 	private List<enemy> enemiesInRange = new List<enemy>(); // Liste des ennemis à portée
 
-	[Export] public int Damage = 10; // Dégâts de la tour
-	[Export] public float AttackSpeed = 1.0f; // Attaque par seconde
+	[Export]
+	public int Damage = 10; // Dégâts de la tour
+
+	[Export]
+	public float AttackSpeed = 1.0f; // Attaque par seconde
 
 	public override void _Ready()
 	{
-		detectionArea = GetNode<Area2D>("DetectionArea");
+		detectionArea = GetNodeOrNull<Area2D>("AnimatedSprite2D/Area2D");
 		detectionArea.BodyEntered += OnEnemyEnter;
 		detectionArea.BodyExited += OnEnemyExit;
-
 	}
 
 	public override void _Process(double delta)
 	{
- 		// Attaque en boucle
+		// Attaque en boucle
 		GetTree().CreateTimer(1.0f / AttackSpeed).Timeout += Attack;
-   }
+	}
 
 	private void OnEnemyEnter(Node2D body)
 	{
 		if (body is enemy e)
 			enemiesInRange.Add(e);
+			GD.Print("Enemy enter : ");
 	}
 
 	private void OnEnemyExit(Node2D body)
 	{
 		if (body is enemy e)
 			enemiesInRange.Remove(e);
+		GD.Print("Enemy exit : ");
 	}
 
 	private void Attack()
