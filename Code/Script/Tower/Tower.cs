@@ -71,11 +71,19 @@ public partial class Tower : Node2D
 			return;
 		}
 
-		enemy target = enemiesInRange[0]; // Attaque le premier ennemi dans la liste
+		enemy target = enemiesInRange[0];
+
+		// 🔥 Vérifie si l'ennemi est encore valide avant d'attaquer
+		if (!IsInstanceValid(target))
+		{
+			GD.PrintErr("❌ L'ennemi ciblé n'existe plus !");
+			enemiesInRange.RemoveAt(0); // ✅ Supprime l'ennemi de la liste s'il est déjà supprimé
+			return;
+		}
+
 		target.TakeDamage(Damage);
 		GD.Print($"🔥 Attaque sur {target.Name} pour {Damage} dégâts !");
 
-		// ✅ Reprogrammer l'attaque avec un Timer unique
 		GetTree().CreateTimer(1.0f / AttackSpeed).Timeout += Attack;
 	}
 }
