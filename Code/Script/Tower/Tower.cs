@@ -3,93 +3,79 @@ using Godot;
 
 public partial class Tower : Node2D
 {
-	private Area2D detectionArea;
-	private List<enemy> enemiesInRange = new List<enemy>(); // Liste des ennemis à portée
+    private Area2D detectionArea;
+    private List<enemy> enemiesInRange = new List<enemy>();
 
-	[Export]
-	public int Damage = 50; // Dégâts de la tour
+    [Export]
+    public int Damage = 50;
 
-	[Export]
-	public float AttackSpeed = 1.0f; // Attaque par seconde
+    [Export]
+    public float AttackSpeed = 1.0f;
 
-	private bool isAttacking = false; // 🔥 Pour éviter de créer plusieurs timers
+    private bool isAttacking = false;
 
-	public override void _Ready()
-	{
-		// ✅ Vérifie que `detectionArea` existe bien
-		detectionArea = GetNodeOrNull<Area2D>("AnimatedSprite2D/Area2D");
+    public override void _Ready()
+    {
+        detectionArea = GetNodeOrNull<Area2D>("AnimatedSprite2D/Area2D");
 
-		if (detectionArea == null)
-		{
-			GD.PrintErr("❌ ERREUR : DetectionArea introuvable !");
-			return;
-		}
+        if (detectionArea == null)
+        {
+            GD.PrintErr("❌ ERREUR : DetectionArea introuvable !");
+            return;
+        }
+        detectionArea.AreaEntered += OnEnemyEnter;
+        detectionArea.AreaExited += OnEnemyExit;
+    }
 
-		GD.Print("✅ Area2D trouvé !");
+    private void OnEnemyEnter(Area2D area)
+    {
+        enemy e = area.GetParent().GetParent() as enemy;
 
-		// ✅ Connecte bien les signaux de détection
-		detectionArea.AreaEntered += OnEnemyEnter;
-		detectionArea.AreaExited += OnEnemyExit;
-	}
+        if (e != null)
+        {
+            enemiesInRange.Add(e);
+            GD.Print($"✅ Enemy {e.Name} détecté !");
 
-	private void OnEnemyEnter(Area2D area)
-	{
-		// 🔥 Remonter 2 niveaux pour atteindre `enemy`
-		enemy e = area.GetParent().GetParent() as enemy;
+            if (!isAttacking)
+            {
+                isAttacking = true;
+                Attack();
+            }
+        }
+        else
+        {
+            GD.PrintErr($"❌ ERREUR : {area.Name} n'a pas trouvé d'ennemi !");
+        }
+    }
 
-		if (e != null)
-		{
-			enemiesInRange.Add(e);
-			GD.Print($"✅ Enemy {e.Name} détecté !");
+    private void OnEnemyExit(Node2D body)
+    {
+        if (body is enemy e)
+        {
+            enemiesInRange.Remove(e);
+            GD.Print($"❌ Enemy {e.Name} est sorti !");
+        }
+    }
 
-			if (!isAttacking)
-			{
-				isAttacking = true;
-				Attack();
-			}
-		}
-		else
-		{
-			GD.PrintErr($"❌ ERREUR : {area.Name} n'a pas trouvé d'ennemi !");
-		}
-	}
+    private void Attack()
+    {
+        if (enemiesInRange.Count == 0)
+        {
+            isAttacking = false;
+            return;
+        }
 
-	private void OnEnemyExit(Node2D body)
-	{
-		if (body is enemy e)
-		{
-			enemiesInRange.Remove(e);
-			GD.Print($"❌ Enemy {e.Name} est sorti !");
-		}
-	}
+        enemiesInRange.RemoveAll(e => !IsInstanceValid(e));
 
-	private void Attack()
-{
-	// 🔥 Vérifier que la liste n'est pas vide
-	if (enemiesInRange.Count == 0)
-	{
-		isAttacking = false; // ✅ Arrêter l'attaque si plus d'ennemis
-		GD.Print("🚫 Plus d'ennemis en portée, arrêt de l'attaque.");
-		return;
-	}
+        if (enemiesInRange.Count == 0)
+        {
+            isAttacking = false;
+            return;
+        }
 
-	// 🔥 Supprimer tous les ennemis qui ont été supprimés (`QueueFree()`)
-	enemiesInRange.RemoveAll(e => !IsInstanceValid(e));
+        enemy target = enemiesInRange[0];
 
-	// ✅ Vérifier à nouveau après nettoyage
-	if (enemiesInRange.Count == 0)
-	{
-		isAttacking = false;
-		GD.Print("🚫 Plus d'ennemis valides, arrêt de l'attaque.");
-		return;
-	}
-
-	enemy target = enemiesInRange[0];
-
-	target.TakeDamage(Damage);
-	GD.Print($"🔥 Attaque sur {target.Name} pour {Damage} dégâts !");
-
-	GetTree().CreateTimer(1.0f / AttackSpeed).Timeout += Attack;
-}
-
+        target.TakeDamage(Damage);
+        GetTree().CreateTimer(1.0f / AttackSpeed).Timeout += Attack;
+    }
 }
