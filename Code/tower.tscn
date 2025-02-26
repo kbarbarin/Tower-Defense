@@ -1,8 +1,11 @@
-[gd_scene load_steps=15 format=3 uid="uid://ddmapq75g7njc"]
+[gd_scene load_steps=30 format=3 uid="uid://ddmapq75g7njc"]
 
 [ext_resource type="Script" path="res://Script/Tower/Tower.cs" id="1_8scgc"]
 [ext_resource type="Texture2D" uid="uid://dw204a01gjl0c" path="res://assets/Tower/2 Idle/3.png" id="1_8u44i"]
 [ext_resource type="Texture2D" uid="uid://nnqv756o6aac" path="res://assets/Tower/3 Units/1/D_Idle.png" id="2_b4dwu"]
+[ext_resource type="PackedScene" uid="uid://jfs6kv515cvx" path="res://projectile.tscn" id="2_pqrdn"]
+[ext_resource type="Texture2D" uid="uid://ot414o71oymj" path="res://assets/Tower/3 Units/1/D_Attack.png" id="4_dad6o"]
+[ext_resource type="Texture2D" uid="uid://bk6vdu4i0lhqh" path="res://assets/Tower/3 Units/1/S_Attack.png" id="5_062hy"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_krili"]
 atlas = ExtResource("1_8u44i")
@@ -59,6 +62,54 @@ region = Rect2(96, 0, 48, 48)
 atlas = ExtResource("2_b4dwu")
 region = Rect2(144, 0, 48, 48)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_7pi8g"]
+atlas = ExtResource("4_dad6o")
+region = Rect2(0, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_veh6w"]
+atlas = ExtResource("4_dad6o")
+region = Rect2(48, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3gcsr"]
+atlas = ExtResource("4_dad6o")
+region = Rect2(96, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cyyyw"]
+atlas = ExtResource("4_dad6o")
+region = Rect2(144, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h17mm"]
+atlas = ExtResource("4_dad6o")
+region = Rect2(192, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tqt82"]
+atlas = ExtResource("4_dad6o")
+region = Rect2(240, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mcwal"]
+atlas = ExtResource("5_062hy")
+region = Rect2(0, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j3p6q"]
+atlas = ExtResource("5_062hy")
+region = Rect2(48, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yd5se"]
+atlas = ExtResource("5_062hy")
+region = Rect2(96, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uwiye"]
+atlas = ExtResource("5_062hy")
+region = Rect2(144, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wab4x"]
+atlas = ExtResource("5_062hy")
+region = Rect2(192, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mbokl"]
+atlas = ExtResource("5_062hy")
+region = Rect2(240, 0, 48, 48)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_3fhhh"]
 animations = [{
 "frames": [{
@@ -75,12 +126,59 @@ animations = [{
 "texture": SubResource("AtlasTexture_vh7hd")
 }],
 "loop": true,
-"name": &"default",
+"name": &"Idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7pi8g")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_veh6w")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3gcsr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cyyyw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h17mm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tqt82")
+}],
+"loop": true,
+"name": &"frontAttack",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mcwal")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_j3p6q")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yd5se")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uwiye")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wab4x")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mbokl")
+}],
+"loop": true,
+"name": &"sideAttack",
 "speed": 5.0
 }]
 
 [node name="Tower" type="Node2D"]
 script = ExtResource("1_8scgc")
+ProjectileScene = ExtResource("2_pqrdn")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
@@ -99,3 +197,4 @@ texture_filter = 1
 position = Vector2(1, 10)
 scale = Vector2(0.541667, 0.479167)
 sprite_frames = SubResource("SpriteFrames_3fhhh")
+animation = &"sideAttack"

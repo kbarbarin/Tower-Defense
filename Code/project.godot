@@ -29,6 +29,7 @@ project/assembly_name="Tower Defense"
 
 2d_render/layer_1="enemy"
 2d_render/layer_2="tower"
+2d_render/layer_3="projectile"
 
 [rendering]
 
