@@ -7,7 +7,7 @@ public partial class Tower : Node2D
 	private List<enemy> enemiesInRange = new List<enemy>(); // Liste des ennemis à portée
 
 	[Export]
-	public int Damage = 100; // Dégâts de la tour
+	public int Damage = 50; // Dégâts de la tour
 
 	[Export]
 	public float AttackSpeed = 1.0f; // Attaque par seconde
@@ -64,26 +64,32 @@ public partial class Tower : Node2D
 	}
 
 	private void Attack()
+{
+	// 🔥 Vérifier que la liste n'est pas vide
+	if (enemiesInRange.Count == 0)
 	{
-		if (enemiesInRange.Count == 0)
-		{
-			isAttacking = false; // ✅ Arrêter l'attaque si plus d'ennemis
-			return;
-		}
-
-		enemy target = enemiesInRange[0];
-
-		// 🔥 Vérifie si l'ennemi est encore valide avant d'attaquer
-		if (!IsInstanceValid(target))
-		{
-			GD.PrintErr("❌ L'ennemi ciblé n'existe plus !");
-			enemiesInRange.RemoveAt(0); // ✅ Supprime l'ennemi de la liste s'il est déjà supprimé
-			return;
-		}
-
-		target.TakeDamage(Damage);
-		GD.Print($"🔥 Attaque sur {target.Name} pour {Damage} dégâts !");
-
-		GetTree().CreateTimer(1.0f / AttackSpeed).Timeout += Attack;
+		isAttacking = false; // ✅ Arrêter l'attaque si plus d'ennemis
+		GD.Print("🚫 Plus d'ennemis en portée, arrêt de l'attaque.");
+		return;
 	}
+
+	// 🔥 Supprimer tous les ennemis qui ont été supprimés (`QueueFree()`)
+	enemiesInRange.RemoveAll(e => !IsInstanceValid(e));
+
+	// ✅ Vérifier à nouveau après nettoyage
+	if (enemiesInRange.Count == 0)
+	{
+		isAttacking = false;
+		GD.Print("🚫 Plus d'ennemis valides, arrêt de l'attaque.");
+		return;
+	}
+
+	enemy target = enemiesInRange[0];
+
+	target.TakeDamage(Damage);
+	GD.Print($"🔥 Attaque sur {target.Name} pour {Damage} dégâts !");
+
+	GetTree().CreateTimer(1.0f / AttackSpeed).Timeout += Attack;
+}
+
 }
