@@ -11,6 +11,8 @@ public partial class enemy : Node2D
 	public int attack;
 	public float speed;
 
+	public Vector2 Velocity { get; private set; }
+
 	[Export]
 	public string EnemyType { get; set; }
 
@@ -63,15 +65,25 @@ public partial class enemy : Node2D
 	}
 
 	public override void _Process(double delta)
-	{
-		if (pathFollow == null)
-			return;
+{
+	if (pathFollow == null)
+		return;
 
-		pathFollow.Progress += (float)(pathSpeed * delta);
-		if (pathFollow.ProgressRatio >= 1.0f)
-		{
-			GD.Print("Ennemi arrivé au bout du chemin !");
-			QueueFree();
-		}
+	// ✅ Calculer l'ancienne position avant le déplacement
+	Vector2 previousPosition = pathFollow.GlobalPosition;
+
+	// ✅ Avancer sur le chemin
+	pathFollow.Progress += (float)(pathSpeed * delta);
+
+	// ✅ Calculer la nouvelle vitesse (différence de position)
+	Velocity = (pathFollow.GlobalPosition - previousPosition) / (float)delta;
+
+	// ✅ Vérifier si l'ennemi est arrivé à la fin du chemin
+	if (pathFollow.ProgressRatio >= 1.0f)
+	{
+		GD.Print("Ennemi arrivé au bout du chemin !");
+		QueueFree();
 	}
+}
+
 }

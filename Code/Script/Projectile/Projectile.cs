@@ -18,7 +18,13 @@ public partial class Projectile : Node2D
 
 		if (target != null)
 		{
-			Vector2 direction = (target.GlobalPosition - Position).Normalized();
+			// ✅ Calculer la position future de l'ennemi
+			Vector2 enemyVelocity = target.Velocity; // 🔥 Ajoute une variable `Velocity` dans `enemy.cs`
+			float timeToTarget = Position.DistanceTo(target.GlobalPosition) / Speed;
+			Vector2 predictedPosition = target.GlobalPosition + enemyVelocity * timeToTarget;
+
+			// ✅ Ajuster la trajectoire du projectile
+			Vector2 direction = (predictedPosition - Position).Normalized();
 			velocity = direction * Speed;
 		}
 	}
@@ -27,15 +33,20 @@ public partial class Projectile : Node2D
 	{
 		if (target == null || !IsInstanceValid(target))
 		{
-			QueueFree(); // ✅ Si la cible n'existe plus, on supprime le projectile
+			QueueFree(); // ✅ Supprimer le projectile si la cible est morte
 			return;
 		}
 
+		// ✅ Recalculer la direction en temps réel
+		Vector2 direction = (target.GlobalPosition - Position).Normalized();
+		velocity = direction * Speed;
+
 		Position += velocity * (float)delta;
 
+		// ✅ Vérifier si le projectile touche l’ennemi
 		if (Position.DistanceTo(target.GlobalPosition) < 10f)
 		{
-			target.TakeDamage(damage); // ✅ Inflige des dégâts à l'ennemi
+			target.TakeDamage(damage);
 			QueueFree();
 		}
 	}

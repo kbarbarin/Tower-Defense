@@ -70,6 +70,13 @@ public partial class Tower : Node2D
 		{
 			enemiesInRange.Remove(e);
 			GD.Print($"❌ Enemy {e.Name} est sorti !");
+
+			// ✅ Vérifier si la tour doit encore attaquer
+			if (enemiesInRange.Count == 0)
+			{
+				isAttacking = false;
+				GD.Print("🛑 Plus d'ennemis en vue, arrêt de l'attaque.");
+			}
 		}
 	}
 
@@ -106,7 +113,7 @@ public partial class Tower : Node2D
 			GetParent().CallDeferred("add_child", projectile);
 		}
 
-		target.TakeDamage(Damage);
+		// target.TakeDamage(Damage);
 		GetTree().CreateTimer(1.0f / AttackSpeed).Timeout += Attack;
 	}
 }
