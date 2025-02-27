@@ -24,6 +24,7 @@ public partial class Tower : Node2D
 	{
 		detectionArea = GetNodeOrNull<Area2D>("AnimatedSprite2D/Area2D");
 		tower = GetNodeOrNull<AnimatedSprite2D>("AnimatedSprite2D");
+		soldier = GetNodeOrNull<AnimatedSprite2D>("Soldier");
 
 		tower.Play("idle");
 
@@ -34,8 +35,6 @@ public partial class Tower : Node2D
 		}
 		detectionArea.AreaEntered += OnEnemyEnter;
 		detectionArea.AreaExited += OnEnemyExit;
-
-		soldier = GetNodeOrNull<AnimatedSprite2D>("Soldier");
 
 		if (soldier == null)
 		{
@@ -71,6 +70,10 @@ public partial class Tower : Node2D
 				{
 					GD.PrintErr($"❌ Animation '{attackAnimation}' introuvable !");
 				}
+			}
+			else
+			{
+				soldier.Play("Idle");
 			}
 		}
 	}

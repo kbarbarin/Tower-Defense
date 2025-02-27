@@ -243,6 +243,5 @@ shape = SubResource("CircleShape2D_fay81")
 [node name="Soldier" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
 position = Vector2(1, 10)
-scale = Vector2(0.541667, 0.479167)
 sprite_frames = SubResource("SpriteFrames_3fhhh")
 animation = &"backAttack"
