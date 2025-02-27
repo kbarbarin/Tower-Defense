@@ -52,6 +52,12 @@ public partial class Tower : Node2D
 			if (IsInstanceValid(target))
 			{
 				string attackAnimation = GetAnimationForDirection(target.GlobalPosition);
+				Vector2 direction = (target.GlobalPosition - GlobalPosition).Normalized();
+
+				if (direction.X > 0)
+					soldier.Scale = new Vector2(-1, 1); // ✅ Regarde à gauche
+				else
+					soldier.Scale = new Vector2(1, 1); // ✅ Regarde à droite
 
 				if (soldier != null && soldier.SpriteFrames.HasAnimation(attackAnimation))
 				{
