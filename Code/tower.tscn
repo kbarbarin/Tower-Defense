@@ -244,4 +244,4 @@ shape = SubResource("CircleShape2D_fay81")
 texture_filter = 1
 position = Vector2(1, 10)
 sprite_frames = SubResource("SpriteFrames_3fhhh")
-animation = &"backAttack"
+animation = &"Idle"

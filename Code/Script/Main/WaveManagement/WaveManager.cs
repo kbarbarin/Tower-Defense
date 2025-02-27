@@ -16,6 +16,9 @@ public partial class WaveManager : Node2D
 
 	public override void _Ready()
 	{
+		GetTree().CallGroup("collision_generator", "GenerateCollision");
+
+		GD.Print("✅ PathCollisionGenerator exécuté, WaveManager peut démarrer !");
 		StartWave(5, 1);
 	}
 
