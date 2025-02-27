@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://ddmapq75g7njc"]
+[gd_scene load_steps=37 format=3 uid="uid://ddmapq75g7njc"]
 
 [ext_resource type="Script" path="res://Script/Tower/Tower.cs" id="1_8scgc"]
 [ext_resource type="Texture2D" uid="uid://dw204a01gjl0c" path="res://assets/Tower/2 Idle/3.png" id="1_8u44i"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://jfs6kv515cvx" path="res://projectile.tscn" id="2_pqrdn"]
 [ext_resource type="Texture2D" uid="uid://ot414o71oymj" path="res://assets/Tower/3 Units/1/D_Attack.png" id="4_dad6o"]
 [ext_resource type="Texture2D" uid="uid://bk6vdu4i0lhqh" path="res://assets/Tower/3 Units/1/S_Attack.png" id="5_062hy"]
+[ext_resource type="Texture2D" uid="uid://udvqudsi2qps" path="res://assets/Tower/3 Units/3/U_Attack.png" id="5_xhnqu"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_krili"]
 atlas = ExtResource("1_8u44i")
@@ -61,6 +62,30 @@ region = Rect2(96, 0, 48, 48)
 [sub_resource type="AtlasTexture" id="AtlasTexture_vh7hd"]
 atlas = ExtResource("2_b4dwu")
 region = Rect2(144, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pgp24"]
+atlas = ExtResource("5_xhnqu")
+region = Rect2(0, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5p3vg"]
+atlas = ExtResource("5_xhnqu")
+region = Rect2(48, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h04vx"]
+atlas = ExtResource("5_xhnqu")
+region = Rect2(96, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gwplo"]
+atlas = ExtResource("5_xhnqu")
+region = Rect2(144, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ehyhm"]
+atlas = ExtResource("5_xhnqu")
+region = Rect2(192, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gkm6a"]
+atlas = ExtResource("5_xhnqu")
+region = Rect2(240, 0, 48, 48)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_7pi8g"]
 atlas = ExtResource("4_dad6o")
@@ -131,6 +156,29 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_pgp24")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5p3vg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h04vx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gwplo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ehyhm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gkm6a")
+}],
+"loop": true,
+"name": &"backAttack",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_7pi8g")
 }, {
 "duration": 1.0,
@@ -197,4 +245,4 @@ texture_filter = 1
 position = Vector2(1, 10)
 scale = Vector2(0.541667, 0.479167)
 sprite_frames = SubResource("SpriteFrames_3fhhh")
-animation = &"sideAttack"
+animation = &"backAttack"

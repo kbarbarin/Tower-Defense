@@ -43,6 +43,28 @@ public partial class Tower : Node2D
 		}
 	}
 
+	public override void _Process(double delta)
+	{
+		if (enemiesInRange.Count > 0)
+		{
+			enemy target = enemiesInRange[0];
+
+			if (IsInstanceValid(target))
+			{
+				string attackAnimation = GetAnimationForDirection(target.GlobalPosition);
+
+				if (soldier != null && soldier.SpriteFrames.HasAnimation(attackAnimation))
+				{
+					soldier.Play(attackAnimation);
+				}
+				else
+				{
+					GD.PrintErr($"❌ Animation '{attackAnimation}' introuvable !");
+				}
+			}
+		}
+	}
+
 	private void OnEnemyEnter(Area2D area)
 	{
 		enemy e = area.GetParent().GetParent() as enemy;
@@ -50,8 +72,6 @@ public partial class Tower : Node2D
 		if (e != null)
 		{
 			enemiesInRange.Add(e);
-			GD.Print($"✅ Enemy {e.Name} détecté !");
-
 			if (!isAttacking)
 			{
 				isAttacking = true;
@@ -69,14 +89,25 @@ public partial class Tower : Node2D
 		if (body is enemy e)
 		{
 			enemiesInRange.Remove(e);
-			GD.Print($"❌ Enemy {e.Name} est sorti !");
-
-			// ✅ Vérifier si la tour doit encore attaquer
 			if (enemiesInRange.Count == 0)
 			{
 				isAttacking = false;
-				GD.Print("🛑 Plus d'ennemis en vue, arrêt de l'attaque.");
 			}
+		}
+	}
+
+	private string GetAnimationForDirection(Vector2 enemyPosition)
+	{
+		Vector2 direction = (enemyPosition - GlobalPosition).Normalized();
+
+		if (Mathf.Abs(direction.X) > Mathf.Abs(direction.Y))
+		{
+			return "sideAttack";
+		}
+		else
+		{
+			string anim = direction.Y > 0 ? "frontAttack" : "backAttack";
+			return anim;
 		}
 	}
 
@@ -96,24 +127,15 @@ public partial class Tower : Node2D
 			return;
 		}
 
-		if (soldier != null)
-		{
-			soldier.Play("sideAttack");
-		}
-
 		enemy target = enemiesInRange[0];
 
-		// ✅ Créer et tirer un projectile
 		if (ProjectileScene != null)
 		{
 			Projectile projectile = (Projectile)ProjectileScene.Instantiate();
 			projectile.Launch(GlobalPosition, target, Damage);
-
-			// 🔥 Utilisation de `CallDeferred()` pour éviter l'erreur de mise à jour physique
 			GetParent().CallDeferred("add_child", projectile);
 		}
 
-		// target.TakeDamage(Damage);
 		GetTree().CreateTimer(1.0f / AttackSpeed).Timeout += Attack;
 	}
 }
