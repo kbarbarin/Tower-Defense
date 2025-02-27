@@ -13,15 +13,19 @@ public partial class Tower : Node2D
 	public float AttackSpeed = 1.0f;
 
 	[Export]
-	public PackedScene ProjectileScene; // 🎯 Assigné depuis l’éditeur
+	public PackedScene ProjectileScene;
 
 	private bool isAttacking = false;
 
 	private AnimatedSprite2D soldier;
+	private AnimatedSprite2D tower;
 
 	public override void _Ready()
 	{
 		detectionArea = GetNodeOrNull<Area2D>("AnimatedSprite2D/Area2D");
+		tower = GetNodeOrNull<AnimatedSprite2D>("AnimatedSprite2D");
+
+		tower.Play("idle");
 
 		if (detectionArea == null)
 		{
@@ -55,9 +59,9 @@ public partial class Tower : Node2D
 				Vector2 direction = (target.GlobalPosition - GlobalPosition).Normalized();
 
 				if (direction.X > 0)
-					soldier.Scale = new Vector2(-1, 1); // ✅ Regarde à gauche
+					soldier.Scale = new Vector2(-1, 1);
 				else
-					soldier.Scale = new Vector2(1, 1); // ✅ Regarde à droite
+					soldier.Scale = new Vector2(1, 1);
 
 				if (soldier != null && soldier.SpriteFrames.HasAnimation(attackAnimation))
 				{
