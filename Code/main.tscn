@@ -1,4 +1,4 @@
-[gd_scene load_steps=136 format=3 uid="uid://byer7pqcf1skw"]
+[gd_scene load_steps=138 format=3 uid="uid://byer7pqcf1skw"]
 
 [ext_resource type="Texture2D" uid="uid://qgcahge0kx0g" path="res://assets/Field/Details/2 Fence/Fence 1.png" id="1_ij7io"]
 [ext_resource type="Texture2D" uid="uid://dv0eigt4x73po" path="res://assets/Field/Ground/FieldsTileset.png" id="1_jxkg8"]
@@ -51,6 +51,8 @@
 [ext_resource type="PackedScene" uid="uid://b33x2kfi5pcfi" path="res://enemy.tscn" id="49_ylbtr"]
 [ext_resource type="Script" path="res://Script/Main/UI/UIManager.cs" id="51_ouj81"]
 [ext_resource type="Script" path="res://Script/Main/WaveManagement/WaveManager.cs" id="51_uiuro"]
+[ext_resource type="PackedScene" uid="uid://ddmapq75g7njc" path="res://tower.tscn" id="52_4jscd"]
+[ext_resource type="Texture2D" uid="uid://dqpy4s10etaik" path="res://assets/Tower/2 Idle/1.png" id="53_q8bel"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ep7ty"]
 texture = ExtResource("1_ij7io")
@@ -962,6 +964,8 @@ progress = 3623.46
 loop = false
 
 [node name="NoBuildZone" type="Area2D" parent="Path2D"]
+collision_layer = 8
+collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Path2D/NoBuildZone"]
 position = Vector2(287.5, 174)
@@ -1007,13 +1011,17 @@ EnemyPath = NodePath("../Path2D")
 layout_mode = 3
 anchors_preset = 0
 script = ExtResource("51_ouj81")
+TowerScene = ExtResource("52_4jscd")
 
 [node name="Panel" type="Panel" parent="UI"]
 layout_mode = 0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="UI/Panel"]
+layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="TextureButton" type="TextureButton" parent="UI/Panel/VBoxContainer"]
+[node name="TowerButton" type="TextureButton" parent="UI/Panel/VBoxContainer"]
+texture_filter = 1
 layout_mode = 2
+texture_normal = ExtResource("53_q8bel")

@@ -15,6 +15,8 @@ public partial class Tower : Node2D
 	[Export]
 	public PackedScene ProjectileScene;
 
+	public bool IsPlaced { get; set; } = false;
+
 	private bool isAttacking = false;
 
 	private AnimatedSprite2D soldier;
@@ -48,6 +50,9 @@ public partial class Tower : Node2D
 
 	public override void _Process(double delta)
 	{
+		if (!IsPlaced)
+			return;
+
 		if (enemiesInRange.Count > 0)
 		{
 			enemy target = enemiesInRange[0];
@@ -82,18 +87,16 @@ public partial class Tower : Node2D
 	{
 		enemy e = area.GetParent().GetParent() as enemy;
 
-		if (e != null)
+		if (e == null)
+			return; // ✅ Ignore les autres objets
+
+		enemiesInRange.Add(e);
+		GD.Print($"✅ Enemy {e.Name} détecté !");
+
+		if (!isAttacking && IsPlaced) // ✅ Ne tire pas tant que la tour n'est pas posée
 		{
-			enemiesInRange.Add(e);
-			if (!isAttacking)
-			{
-				isAttacking = true;
-				Attack();
-			}
-		}
-		else
-		{
-			GD.PrintErr($"❌ ERREUR : {area.Name} n'a pas trouvé d'ennemi !");
+			isAttacking = true;
+			Attack();
 		}
 	}
 
@@ -126,6 +129,8 @@ public partial class Tower : Node2D
 
 	private void Attack()
 	{
+		if (!IsPlaced)
+			return;
 		if (enemiesInRange.Count == 0)
 		{
 			isAttacking = false;
