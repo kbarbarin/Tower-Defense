@@ -35,6 +35,7 @@ public partial class UIManager : Control
 		isPlacing = true; // 📌 Active le mode placement
 		currentTower = TowerScene.Instantiate<Tower>(); // 📌 Instancie une nouvelle tour
 		AddChild(currentTower); // 📌 Ajoute la tour à l'UI
+		currentTower.AddToGroup("Towers"); // 📌 Ajoute la tour au groupe pour éviter les collisions
 	}
 
 	public override void _Process(double delta)

@@ -7,8 +7,7 @@ public partial class Projectile : Node2D
 	private enemy target;
 	private int damage;
 
-	[Export]
-	public float Speed = 300.0f; // Vitesse du projectile
+	[Export] public float Speed = 300.0f; // Vitesse du projectile
 
 	public void Launch(Vector2 startPos, enemy targetEnemy, int dmg)
 	{
