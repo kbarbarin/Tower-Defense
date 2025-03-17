@@ -75,17 +75,32 @@ public partial class UIManager : Control
 
 		if (pathArea != null)
 		{
-			foreach (Area2D area in pathArea.GetOverlappingAreas()) // ✅ Vérifie si la tour chevauche un chemin
+			foreach (Node child in pathArea.GetChildren()) // ✅ Vérifie chaque enfant du `NoBuildZone`
 			{
-				if (area is Area2D && area.Position.DistanceSquaredTo(position) < 2500) // 50² pour éviter float
+				if (child is CollisionShape2D shape && shape.Shape is RectangleShape2D rect)
 				{
-					GD.PrintErr("❌ Impossible de placer ici !");
-					return false;
+					Vector2 shapePos = shape.GlobalPosition;
+					Vector2 halfExtents = rect.Size / 1.5f;
+
+					// ✅ Ajuster la position pour tester la BASE de la tour (ex : 30px en dessous)
+					Vector2 basePosition = position + new Vector2(0, 35); // Ajuste 30 selon la hauteur de la tour
+
+					// ✅ Vérifier si la BASE de la tour est dans le rectangle
+					if (
+						basePosition.X > shapePos.X - halfExtents.X
+						&& basePosition.X < shapePos.X + halfExtents.X
+						&& basePosition.Y > shapePos.Y - halfExtents.Y
+						&& basePosition.Y < shapePos.Y + halfExtents.Y
+					)
+					{
+						GD.PrintErr("❌ Impossible de placer ici : Zone interdite !");
+						return false;
+					}
 				}
 			}
 		}
 
-		if (IsOverlappingOtherTowers(position)) // Vérifie si une autre tour est déjà là
+		if (IsOverlappingOtherTowers(position))
 		{
 			GD.PrintErr("❌ Une autre tour est déjà placée ici !");
 			return false;
