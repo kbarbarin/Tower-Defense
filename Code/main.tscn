@@ -854,9 +854,8 @@ size = Vector2(945.5, 63)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_h264y"]
 size = Vector2(64, 104)
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_d01ah"]
-radius = 107.0
-height = 536.0
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2u4di"]
+size = Vector2(205.499, 479.5)
 
 [node name="Node2D" type="Node2D"]
 
@@ -996,9 +995,9 @@ position = Vector2(752, 846)
 shape = SubResource("RectangleShape2D_h264y")
 
 [node name="CollisionShape2D8" type="CollisionShape2D" parent="Path2D/NoBuildZone"]
-position = Vector2(750, 978)
+position = Vector2(729.25, 977.25)
 rotation = 1.5708
-shape = SubResource("CapsuleShape2D_d01ah")
+shape = SubResource("RectangleShape2D_2u4di")
 
 [node name="WaveManager" type="Node2D" parent="." node_paths=PackedStringArray("EnemyPath")]
 script = ExtResource("51_uiuro")
