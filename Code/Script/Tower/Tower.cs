@@ -102,12 +102,25 @@ public partial class Tower : Node2D
 
 	private void OnEnemyExit(Node2D body)
 	{
-		if (body is enemy e)
+		GD.Print($"onEnemyExit {body}");
+
+		if (body is Area2D area)
 		{
-			enemiesInRange.Remove(e);
-			if (enemiesInRange.Count == 0)
+			Node parent = area.GetParent()?.GetParent(); // 🔥 Récupère le 2ᵉ parent directement
+
+			if (parent is enemy e) // ✅ Vérifie que c'est bien un enemy
 			{
-				isAttacking = false;
+				enemiesInRange.Remove(e);
+				GD.Print($"❌ Enemy {e.Name} removed!");
+
+				if (enemiesInRange.Count == 0)
+				{
+					isAttacking = false;
+				}
+			}
+			else
+			{
+				GD.PrintErr($"❌ ERREUR : {body.Name} n'a pas d'ennemi parent !");
 			}
 		}
 	}
