@@ -16,6 +16,8 @@ internal partial class main
 
         Vector2 screenSize = GetViewportRect().Size;
 
+        GD.Print(screenSize);
+
         float zoomFactor = Math.Min(screenSize.X / baseWidth, screenSize.Y / baseHeight);
         camera.Zoom = new Vector2(zoomFactor, zoomFactor);
 

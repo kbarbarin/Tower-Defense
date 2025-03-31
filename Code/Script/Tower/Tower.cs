@@ -76,10 +76,10 @@ public partial class Tower : Node2D
 					GD.PrintErr($"❌ Animation '{attackAnimation}' introuvable !");
 				}
 			}
-			else
-			{
-				soldier.Play("Idle");
-			}
+		}
+		else
+		{
+			soldier.Play("Idle");
 		}
 	}
 
@@ -102,25 +102,18 @@ public partial class Tower : Node2D
 
 	private void OnEnemyExit(Node2D body)
 	{
-		GD.Print($"onEnemyExit {body}");
-
 		if (body is Area2D area)
 		{
-			Node parent = area.GetParent()?.GetParent(); // 🔥 Récupère le 2ᵉ parent directement
+			Node parent = area.GetParent()?.GetParent();
 
-			if (parent is enemy e) // ✅ Vérifie que c'est bien un enemy
+			if (parent is enemy e)
 			{
 				enemiesInRange.Remove(e);
-				GD.Print($"❌ Enemy {e.Name} removed!");
 
 				if (enemiesInRange.Count == 0)
 				{
 					isAttacking = false;
 				}
-			}
-			else
-			{
-				GD.PrintErr($"❌ ERREUR : {body.Name} n'a pas d'ennemi parent !");
 			}
 		}
 	}

@@ -1,4 +1,4 @@
-[gd_scene load_steps=138 format=3 uid="uid://byer7pqcf1skw"]
+[gd_scene load_steps=140 format=3 uid="uid://byer7pqcf1skw"]
 
 [ext_resource type="Texture2D" uid="uid://qgcahge0kx0g" path="res://assets/Field/Details/2 Fence/Fence 1.png" id="1_ij7io"]
 [ext_resource type="Texture2D" uid="uid://dv0eigt4x73po" path="res://assets/Field/Ground/FieldsTileset.png" id="1_jxkg8"]
@@ -53,6 +53,7 @@
 [ext_resource type="Script" path="res://Script/Main/WaveManagement/WaveManager.cs" id="51_uiuro"]
 [ext_resource type="PackedScene" uid="uid://ddmapq75g7njc" path="res://tower.tscn" id="52_4jscd"]
 [ext_resource type="Texture2D" uid="uid://dqpy4s10etaik" path="res://assets/Tower/2 Idle/1.png" id="53_q8bel"]
+[ext_resource type="PackedScene" uid="uid://30ny6qp50jdn" path="res://GoldManager.tscn" id="54_o0pot"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ep7ty"]
 texture = ExtResource("1_ij7io")
@@ -857,6 +858,9 @@ size = Vector2(64, 104)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2u4di"]
 size = Vector2(205.499, 479.5)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yeoj2"]
+size = Vector2(184, 1092)
+
 [node name="Node2D" type="Node2D"]
 
 [node name="TileMap" type="TileMap" parent="."]
@@ -999,6 +1003,10 @@ position = Vector2(729.25, 977.25)
 rotation = 1.5708
 shape = SubResource("RectangleShape2D_2u4di")
 
+[node name="CollisionShape2D9" type="CollisionShape2D" parent="Path2D/NoBuildZone"]
+position = Vector2(1830, 544)
+shape = SubResource("RectangleShape2D_yeoj2")
+
 [node name="WaveManager" type="Node2D" parent="." node_paths=PackedStringArray("EnemyPath")]
 script = ExtResource("51_uiuro")
 EnemyScene = ExtResource("49_ylbtr")
@@ -1029,10 +1037,9 @@ grow_vertical = 2
 [node name="VBoxContainer" type="VBoxContainer" parent="UI/Panel"]
 z_index = 5
 layout_mode = 0
-offset_left = 40.0
-offset_right = 130.0
+offset_left = 57.0
+offset_right = 147.0
 offset_bottom = 130.0
-scale = Vector2(1.5, 1.5)
 
 [node name="TowerButton" type="TextureButton" parent="UI/Panel/VBoxContainer"]
 z_index = 5
@@ -1041,3 +1048,7 @@ layout_mode = 2
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.0
 texture_normal = ExtResource("53_q8bel")
+
+[node name="GoldManager" parent="UI/Panel" instance=ExtResource("54_o0pot")]
+position = Vector2(80, 20)
+scale = Vector2(1.4, 1.4)
