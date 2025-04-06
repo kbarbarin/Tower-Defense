@@ -65,7 +65,7 @@ public partial class WaveManager : Node2D
 		Node2D newEnemy = (Node2D)EnemyScene.Instantiate();
 		enemy enemyInstance = newEnemy as enemy;
 
-		enemyInstance.Initialize("Wolf", 100, 10, 50.0f, pathFollow);
+		enemyInstance.Initialize("Wolf", 100, 10, 50.0f, pathFollow, 25);
 
 		pathFollow.AddChild(enemyInstance);
 		EnemyPath.AddChild(pathFollow);

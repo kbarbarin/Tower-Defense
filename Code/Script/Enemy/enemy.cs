@@ -5,7 +5,9 @@ public partial class enemy : Node2D
 {
 	private AnimatedSprite2D animatedSprite;
 	private PathFollow2D pathFollow;
+	private GoldManager gold;
 	private float pathSpeed;
+	private int reward;
 
 	public int life;
 	public int attack;
@@ -16,7 +18,7 @@ public partial class enemy : Node2D
 	[Export]
 	public string EnemyType { get; set; }
 
-	public void Initialize(string type, int hp, int atk, float spd, PathFollow2D pathFollowNode)
+	public void Initialize(string type, int hp, int atk, float spd, PathFollow2D pathFollowNode, int rwd)
 	{
 		EnemyType = type;
 		life = hp;
@@ -24,11 +26,18 @@ public partial class enemy : Node2D
 		speed = spd;
 		pathFollow = pathFollowNode;
 		pathSpeed = speed / 1000.0f;
+		reward = rwd;
 	}
 
 	public override void _Ready()
 	{
 		animatedSprite = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
+		gold = GetNodeOrNull<GoldManager>("../UI/Panel/GoldManager");
+		
+		if (gold == null) {
+			GD.PrintErr("gold is null");
+			QueueFree();
+		}
 		SetupEnemy(EnemyType);
 	}
 
@@ -58,8 +67,10 @@ public partial class enemy : Node2D
 	public void TakeDamage(int damage)
 	{
 		life -= damage;
-		if (life <= 0)
+		if (life <= 0) {
+			gold.EarnCoins(reward);
 			QueueFree();
+			}
 	}
 
 	public override void _Process(double delta)
